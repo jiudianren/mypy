@@ -21,6 +21,7 @@ def log(func):
     return wrapper
 
 
+print("======1")
 @log
 def now2():
     print('2015-3-25')

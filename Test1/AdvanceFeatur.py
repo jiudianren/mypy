@@ -24,9 +24,13 @@ print([x * x for x in range(1, 11)])
 print(range(1,11))
 print( [m + n for m in 'ABC' for n in 'XYZ'])
 
+print('=====')
 #Éú³ÉÆ÷
 g = (x * x for x in range(10))
-print(g.next())
+#python2.7
+#print(g.next())
+#python 3.6
+print(g.__next__())
 
 print('=====')
 for n in g:
