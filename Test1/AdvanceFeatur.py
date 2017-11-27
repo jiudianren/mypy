@@ -28,6 +28,7 @@ print( [m + n for m in 'ABC' for n in 'XYZ'])
 g = (x * x for x in range(10))
 print(g.next())
 
+print('=====')
 for n in g:
     print(n)
 
@@ -39,9 +40,10 @@ def fib(max):
         n = n + 1
     return 'done'
 
-fib(100)
+print('====fib(100)')
+fib(10)
 
-
+print('====odd(100)')
 #相当于一个生成器
 def odd():
     print('step 1')

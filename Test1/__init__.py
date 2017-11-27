@@ -1,5 +1,6 @@
+# *- coding: utf-8 -*- 
 print("hello world");
 ord('A')
-ord('ÖÐ')
+ord('ä¸­')
 chr(25991)
 

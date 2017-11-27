@@ -39,14 +39,38 @@ nummm={1,2,3,4,5}
 print(cal(*nummm))
 
 
-# 可变参数 自动组装成 dicts
+#可变参数
+
+def calc(numbers):
+    sum = 0
+    for n in numbers:
+        sum = sum + n * n
+    return sum
+
+
+
+#关键字参数
+# 可变参数 自动组装成  自动组装为一个tuple
 def person(name, age, **kw):
     print('name:', name, 'age:', age, 'other:', kw)
     
 person("lisi", 12,city='nanjing',heavy=172,tal='64kg')
 # 命名关键字参数 只接收city和job作为关键字参数
-def person2(name, age, *, city, job):
+def person2(name, age,  city, job):
     print(name, age, city, job)
+
+# 命名关键字 参数
+
+def person3(name, age, **kw):
+    if 'city' in kw:
+        # 有city参数
+        pass
+    if 'job' in kw:
+        # 有job参数
+        pass
+    print('name:', name, 'age:', age, 'other:', kw)
+
+person3('Jack', 24, city='Beijing', addr='Chaoyang', zipcode=123456)
     
 #在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，
 #这5种参数都可以组合使用。但是请注意，
