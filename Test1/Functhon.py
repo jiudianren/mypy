@@ -21,6 +21,7 @@ def nop():
 
 import math
 
+# 默认参数
 def move(x, y, step, angle=0):
     nx = x + step * math.cos(angle)
     ny = y - step * math.sin(angle)
@@ -41,36 +42,39 @@ print(cal(*nummm))
 
 #可变参数
 print("可变参数")
-# 可变参数 自动组装成  自动组装为一个tuple
+
 def calc(numbers):
     sum = 0
     for n in numbers:
+        print("可变参数:%d " % n)
         sum = sum + n * n
     return sum
+#相当于 传入了一个list 
+print(calc( (1,2,3) ))
 
-print(calc((1,2,3)))
-
-
+# 可变参数 自动组装成  自动组装为一个tuple
 def calc2( *numbers):
     sum = 0
     for n in numbers:
         sum = sum + n * n
     return sum
 
-print(calc2(1,2,3))
+print( calc2(1,2,3) )
 
 #关键字参数
+print("关键字参数")
 
 def person(name, age, **kw):
     print('name:', name, 'age:', age, 'other:', kw)
     
 person("lisi", 12,city='nanjing',heavy=172,tal='64kg')
-print("限制关键字参数")
-# 命名关键字参数 只接收city和job作为关键字参数
+
+
+# 命名关键字参数   只接收city和job作为关键字参数
+print("命名关键字参数")
 def person2(name, age, *, city, job):
     print(name, age, city, job)
 
-# 命名关键字 参数
 
 def person3(name, age, **kw):
     if 'city' in kw:
