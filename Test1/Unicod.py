@@ -1,11 +1,12 @@
+# coding=gbk
 '''
-Created on 2017Äê7ÔÂ12ÈÕ
+Created on 2017ï¿½ï¿½7ï¿½ï¿½12ï¿½ï¿½
 
 @author: Lian
 '''
-# xÊÇ byteÀàÐÍ×Ö·û´®
+# xï¿½ï¿½ byteï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
 x = b'ABC'
-#y ÊÇÄ¬ÈÏµÄ Unicode×Ö·û´®
+#y ï¿½ï¿½Ä¬ï¿½Ïµï¿½ Unicodeï¿½Ö·ï¿½ï¿½ï¿½
 y= 'ABC'
 
 'ABC'.encode('ascii')

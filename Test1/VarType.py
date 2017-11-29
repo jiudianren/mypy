@@ -1,38 +1,39 @@
+# coding=gbk
 '''
-Created on 2017Äê7ÔÂ12ÈÕ
+Created on 2017ï¿½ï¿½7ï¿½ï¿½12ï¿½ï¿½
 
 @author: Lian
 '''
-#list listÊÇÒ»ÖÖÓÐÐòµÄ¼¯ºÏ£¬¿ÉÒÔËæÊ±Ìí¼ÓºÍÉ¾³ýÆäÖÐµÄÔªËØ
-classmate=['¹·µ°','Ã«µ°','°¢Ã«','°¡¹·']
+#list listï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½Óºï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Ôªï¿½ï¿½
+classmate=['ï¿½ï¿½ï¿½ï¿½','Ã«ï¿½ï¿½','ï¿½ï¿½Ã«','ï¿½ï¿½ï¿½ï¿½']
 print(classmate[1])
 print(classmate[-1])
-classmate.append('ÓàÔò³É')
+classmate.append('ï¿½ï¿½ï¿½ï¿½ï¿½')
 print (classmate[-1])
-classmate.insert(1, 'µÚÒ»')
+classmate.insert(1, 'ï¿½ï¿½Ò»')
 classmate.pop();
 print(classmate[-1])
 
 
-#tuple  tupleºÍlist·Ç³£ÀàËÆ£¬µ«ÊÇtupleÒ»µ©³õÊ¼»¯¾Í²»ÄÜÐÞ¸Ä£¬±ÈÈçÍ¬ÑùÊÇÁÐ³öÍ¬Ñ§µÄÃû×Ö
+#tuple  tupleï¿½ï¿½listï¿½Ç³ï¿½ï¿½ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½tupleÒ»ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Í²ï¿½ï¿½ï¿½ï¿½Þ¸Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Í¬Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-cm=("¹Ì¶¨","Í¬Ñ§","Ôª×é")
+cm=("ï¿½Ì¶ï¿½","Í¬Ñ§","Ôªï¿½ï¿½")
 print(cm)
 ontMemTuple=(1,)
 print(ontMemTuple)
 
 
-#dict£¬dictÈ«³Ædictionary£¬ÔÚÆäËûÓïÑÔÖÐÒ²³ÆÎªmap£¬Ê¹ÓÃ¼ü-Öµ£¨key-value£©´æ´¢£¬¾ßÓÐ¼«¿ìµÄ²éÕÒËÙ¶È
+#dictï¿½ï¿½dictÈ«ï¿½ï¿½dictionaryï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½Îªmapï¿½ï¿½Ê¹ï¿½Ã¼ï¿½-Öµï¿½ï¿½key-valueï¿½ï¿½ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 
 d = {'Michael': 95, 'Bob': 75, 'Tracy': 85}
 
 print(d['Michael'])
 
 
-#setºÍdictÀàËÆ£¬Ò²ÊÇÒ»×ékeyµÄ¼¯ºÏ£¬µ«²»´æ´¢value¡£ÓÉÓÚkey²»ÄÜÖØ¸´
+#setï¿½ï¿½dictï¿½ï¿½ï¿½Æ£ï¿½Ò²ï¿½ï¿½Ò»ï¿½ï¿½keyï¿½Ä¼ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢valueï¿½ï¿½ï¿½ï¿½ï¿½ï¿½keyï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
 
 s = set([1, 2, 3])
 
 print(s)
 
-#set¿ÉÒÔ¿´³ÉÊýÑ§ÒâÒåÉÏµÄÎÞÐòºÍÎÞÖØ¸´ÔªËØµÄ¼¯ºÏ£¬Òò´Ë£¬Á½¸öset¿ÉÒÔ×öÊýÑ§ÒâÒåÉÏµÄ½»¼¯¡¢²¢¼¯µÈ²Ù×÷£º
+#setï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½Ôªï¿½ØµÄ¼ï¿½ï¿½Ï£ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½setï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ï¿½
