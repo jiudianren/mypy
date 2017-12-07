@@ -1,3 +1,6 @@
+# coding=gbk
+
+
 def DiveErro():
     try:
         print('try...')
