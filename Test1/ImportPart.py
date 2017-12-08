@@ -18,6 +18,7 @@ def test():
         print('Hello, my main!')
     elif len(args)==2:
         print('Hello, %s!' % args[1])
+        print('Hello, %s!' % args[2])
     else:
         print('Too many arguments!')
 
