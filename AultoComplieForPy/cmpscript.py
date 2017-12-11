@@ -5,48 +5,79 @@ import time
 import pdb
 
 import logging
-from FunctionLearning.DecoratorTest import log
 logging.basicConfig(level=logging.DEBUG)
 
 
+
+
 '''
-python cmpscriptpy.py t
-0 请设置  make -j 中使用的核心数
+准备：
+1、 设置  $PCRF_HOME 环境变量
+2、 设置$IMPSYSDIR 环境变量
+3、 目录结构要求：
+   %PCRF_HOME----
+                |
+                |
+                ---PCRFSERVER---
+                                |
+                                |
+                                |
+                                ---HUB
+                                |
+                                |
+                                ---techlib
+                                |
+                                .......
+                                
+                                
+4 请设置  make -j 中使用的核心数  "GMakejcout= xx" （将 xx 改为 需要使用的核心数 默认为 4）                    
+
+
+使用:
+python cmpscriptpy.py xx1 xx2 xx3 xx4 ....
+
 1 如需 执行perl， 需要加入 pe(perl) 选项
-2 如果需要release 模式，则需要加入r (debug) 选项
-3 
+2 如果需要Release 模式，则需要加入r (Release) 选项
+3 hub部分默认编译方式 DB + QMDB [default]  如果需要采用QMDB模式 ，需要  加入  q(qmdb)选项
+4 如果pcrf和unintest同时需要编译，则先编译pcrf 后编译 unittest
+5 参数输入： 
     techlib        需要至少一个字符 : t te techlib
     hub            需要至少一个字符 : h
     unittest        需要至少一个字符 : u
+    release        需要至少一个字符 ：r
+    qmdb          需要至少一个字符 ：q （for hub qmdb only 模式）
+    
     pcrf            需要 至少两个 : pc
     perl          需要至少两个字符 ：pe
     servicelib    需要至少两个字符 ：se
     spr            需要至少两个字符 ：sp
-
-#待加入
-hub部分编译特殊，需要增加特殊处理
-
+   
 '''
 
 
 logging.warn("**********" )
 # 更改如下配置为自己的配置
-logging.warn("Confirm changt thest args" )
+logging.warn("Confirm change these args" )
 GMakejcout= 4
 logging.warn("make -j ?? j=%d" % GMakejcout )
-# 执行make install时候，回显到屏幕的内容 
+# 执行make install时候，回显到屏幕的内容  同时输出到文件 名称
 GMakeInstallResultFile="MIRSFILE"
-#默认debug 模式
-GDebugModle=True
-#当前编译是否包含hub模块
-GContainHub=False
-
 logging.warn("**********" )
 
-##
+
+#全局变量
+#默认debug 模式
+GDebugModle=True
+#默认hub编译时候 采用 DB+QMDB模式
+HubQmdbOnlyFlag=False
+
+
+
+## PCRFServer 检查PCRFServer是否存在
 def GetPcrfServerPath():
     PCRF_HOME=os.popen("echo $PCRF_HOME").read().strip('\n')
-    logging.debug(PCRF_HOME) 
+    logging.debug(PCRF_HOME)
+     
     PCRFServer="PCRFServer"
     PCRFServer_HOME = os.path.join(PCRF_HOME,PCRFServer)
     print("PCRFServer_HOME is %s" % PCRFServer_HOME)
@@ -66,8 +97,8 @@ def GetPCRFServerSubdir():
     for key in subDir:
         print(key)
     '''
-    #编译子目录有顺序的 perl 是一个标志
-    CompileDir=   {'techlib': 1,'servicelib':2,'hub':3 ,'pcrf':4,'spr':5 ,'unittest':6, "perl":7, "release":8}
+    #编译子目录有顺序的 perl 是一个标志 
+    CompileDir={'techlib': 1,'servicelib':2,'hub':3 ,'pcrf':4,'spr':5 ,'unittest':6, "perl":7, "release":8,"qmdb":9}
     for k, v in CompileDir.items():
         logging.debug("dir: %s, index :%d" %(k,v))
     return   CompileDir 
@@ -88,7 +119,7 @@ def GetParma( CompileDir ):
             #参数全部转化为小写
             arg=arg.lower()
             logging.info("arg : %s " % arg  )
-#             pdb.set_trace()
+
             rs = GetSubDir(arg, CompileDir);
             if  rs != "" :
                 needCmpSubDir.append(rs)
@@ -103,13 +134,14 @@ def GetParma( CompileDir ):
 
 
 def GetSubDir(arg , CompileDir):
+#     pdb.set_trace()
     compile=""
     for k in CompileDir :
-        if (k.find( arg)  == 0 ) and ( arg[0] =='t' or arg[0] =='h'  or arg[0] =='u' or arg[0]=='r' ) :
+        if (k.find( arg)  == 0 ) and ( arg[0] =='t' or arg[0] =='h'  or arg[0] =='u' or arg[0]=='r' or arg[0]=='q'  ) :
             compile = k
             logging.info("get your input :%s--> %s" % (arg ,compile))
             return  compile
-        elif (k.find( arg)  == 0 ) and ( arg[0:2]=="pc" or arg[0:2] =="pe" or arg[0:2] =="sp" or arg[0:2] =="se" ) :        
+        elif ( k.find( arg)  == 0 ) and ( arg[0:2]=="pc" or arg[0:2] =="pe" or arg[0:2] =="sp" or arg[0:2] =="se" ) :        
             compile = k
             logging.info("get your input :%s--> %s" % (arg ,compile))
             return  compile 
@@ -139,7 +171,11 @@ def  DoPerlCmd():
 
 def GetBuildPath(key) :
     PServerHome = GetPcrfServerPath()
-  
+    
+    if (key == "unittest"):
+        key+="/src/"
+        logging.info("unittest key is: %s" % key)
+    
     keyDir=os.path.join(PServerHome,key)
     logging.debug("keyDir is %s" % keyDir)
     buildKeyWord="build"
@@ -147,10 +183,10 @@ def GetBuildPath(key) :
     logging.info(" buildPath is %s" % buildPath)
     subKeyDir= [x for x in os.listdir(keyDir) if os.path.isdir(x)]
     
-    for key  in subKeyDir:
+    for key in subKeyDir:
         logging.debug(" key is %s" % key)
     
-    
+    # 是否存在build路径，如果不存在 则尝试创建一次，如果创建失败 ，则退出脚本
     if not os.path.exists(buildPath):
         logging.info("%s not exist." % buildPath)
         os.mkdir(buildPath)
@@ -163,7 +199,7 @@ def GetBuildPath(key) :
         return buildPath
 
 
-def RmMakeInstallFile():
+def RmMakeInstallRecordFile():
     rmFileCmd ="rm "
     rmFileCmd += GMakeInstallResultFile
     rmFileCmd +="*"
@@ -190,13 +226,17 @@ def GetMakeInstallCmd():
     logging.debug(" cmd makeinstall is %s" ,makeinstall)
     return makeinstall
 
-def GetCmakeCmd():
-    cmakeCmd="cmake -DCMAKE_INSTALL_PREFIX=$HOME "
+def GetCmakeCmd( curPath ):
+    logging.debug(" curPath %s" % curPath)
+    cmakeCmd="cmake "
+    
+    if (curPath.find("hub") >= 0) and ( HubQmdbOnlyFlag == True ):
+        logging.debug(" hub  %s" % curPath)
+        cmakeCmd += " -DCMAKE_INSTALL_PREFIX=${IMPSYSDIR} "
+        cmakeCmd += " -DQMDB=QuickMDB "
+        
     if GDebugModle:
         cmakeCmd+="-DCMAKE_BUILD_TYPE=Debug "
-    #todo
-    if GContainHub:
-        logging.warn("going todo option for hub to add")
     
     cmakeCmd+="-DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CXX_COMPILER=`which c++` .."
     logging.debug("cmake cmd :%s" ,cmakeCmd)
@@ -209,9 +249,9 @@ def CompileBuildPath(buildPath) :
     curPath=os.path.abspath('.')
     logging.info("current path is: %s" % curPath)
     
-    RmMakeInstallFile()
+    RmMakeInstallRecordFile()
     
-    cmakeCmd=GetCmakeCmd()
+    cmakeCmd=GetCmakeCmd( curPath )
     DoCmd(cmakeCmd)
     
     makeclean="make clean"
@@ -225,33 +265,41 @@ def CompileBuildPath(buildPath) :
         
             
 def CompileSubDir(needCompSubDir , CompileDir):
+    #'techlib', '.git', 'servicelib', 'unittest', '.settings', 'spr', 'document', 'pcrf', 'hub'
+    compileSubDir=['techlib', 'servicelib', 'unittest', 'spr', 'pcrf', 'hub']
     if  "perl" in needCompSubDir:
         DoPerlCmd()
+        
     if "release"  in needCompSubDir:
         #release模式
         logging.warn("Release Modem")
         GDebugModle = False
-    if "hub" in needCompSubDir:
-        GContainHub=True
-        logging.warn("Contain  Hub model")
-    for key    in  needCompSubDir:
-        #先编译 techlib service 如果存在的话
-        #CompileDir=   {'techlib': 1,'servicelib':2,'hub':3 ,'pcrf':4,'spr':5 ,'unittest':6, "perl":7}
-        if (key == "techlib") or  ( key != "servicelib") :
+
+    if "qmdb" in needCompSubDir:
+        HubQmdbOnlyFlag = True
+        logging.warn(" QMDB Only model for hub")
+    
+    #如果pcrf和unintest同时需要编译，则先编译pcrf 后编译 unittest
+    if   ("pcrf" in needCompSubDir) and ("unittest" in needCompSubDir):
+            buildPath = GetBuildPath("pcrf")
+            CompileBuildPath(buildPath)
+            
+            buildPath = GetBuildPath("unittest")
+            CompileBuildPath(buildPath)
+            
+            needCompSubDir.remove("pcrf")
+            needCompSubDir.remove("unittest")
+            
+    for key in needCompSubDir:
+        if key in compileSubDir:
+            logging.debug("Key:[%s] is a subdir" % key)
             buildPath = GetBuildPath(key)
             CompileBuildPath(buildPath)
-        elif (key == "hub" ) or (key == "pcrf" ) or (key == "spr" ) :
-            buildPath = GetBuildPath(key)
-            CompileBuildPath(buildPath)
-        elif key =='unittest':
-            key+="/src/"
-            logging.info("unittest key is: %s" % key)
-            buildPath=  GetBuildPath(key)
-            CompileBuildPath(buildPath)
+        elif (key == "perl" ) or (key == "release" ) or (key == "qmdb" ):
+            logging.info("Key:[%s] is a Flag Key Word" % key)
         else:
-            logging.warn("Cann: %s" % key)
+            logging.warn("Cann't find key : %s" % key)
             pass
-        
         
     
 def CompileAll():
