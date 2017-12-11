@@ -3,11 +3,9 @@ import os
 import sys
 import time
 import pdb
-
 import logging
-logging.basicConfig(level=logging.DEBUG)
 
-
+logging.basicConfig(level=logging.INFO)
 
 
 '''
@@ -34,13 +32,14 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 使用:
-python cmpscriptpy.py xx1 xx2 xx3 xx4 ....
+python cmpscript.py xx1 xx2 xx3 xx4 ....
 
 1 如需 执行perl， 需要加入 pe(perl) 选项
 2 如果需要Release 模式，则需要加入r (Release) 选项
-3 hub部分默认编译方式 DB + QMDB [default]  如果需要采用QMDB模式 ，需要  加入  q(qmdb)选项
-4 如果pcrf和unintest同时需要编译，则先编译pcrf 后编译 unittest
-5 参数输入： 
+3 hub部分默认编译方式 DB + QMDB [default]  如果需要采用QMDB模式（qmdb only） ，需要  加入  q(qmdb)选项
+4 如果 （techlib或者servicelib） 和 其他模块 同时需要编译，则先编译（techlib或者servicelib） ,后编译 其他模块
+5 如果pcrf和 unintest同时需要编译，则先编译pcrf ,后编译 unittest
+6 参数输入： 
     techlib        需要至少一个字符 : t te techlib
     hub            需要至少一个字符 : h
     unittest        需要至少一个字符 : u
@@ -51,7 +50,24 @@ python cmpscriptpy.py xx1 xx2 xx3 xx4 ....
     perl          需要至少两个字符 ：pe
     servicelib    需要至少两个字符 ：se
     spr            需要至少两个字符 ：sp
-   
+
+示例   
+1 编译 techlib 内容
+python cmpscript.py t 
+或者
+python cmpscript.py  techlib
+python cmpscript.py  techli
+python cmpscript.py  techl
+python cmpscript.py  tech
+python cmpscript.py  tec
+python cmpscript.py  te
+
+2 同时编译多个模块 
+python cmpscript.py te se pc (同时编译 te se pc 等 模块)
+3 需要执行perl 后 编译 pcrf 和 unittest
+python cmpscript.py pe pc un
+4  hub部分，需要以 qmdbonly方式编译，并且需要同时编译pcrf模块
+python cmpscript.py qmdb h pc
 '''
 
 
@@ -60,8 +76,13 @@ logging.warn("**********" )
 logging.warn("Confirm change these args" )
 GMakejcout= 4
 logging.warn("make -j ?? j=%d" % GMakejcout )
+
 # 执行make install时候，回显到屏幕的内容  同时输出到文件 名称
 GMakeInstallResultFile="MIRSFILE"
+
+#只观察脚本执行的编译顺序，不执行 cmake make等命令 默认false
+ObserveCompileOrder = False
+logging.warn(" just obser the compile order flag :%s" % ObserveCompileOrder )
 logging.warn("**********" )
 
 
@@ -251,20 +272,21 @@ def CompileBuildPath(buildPath) :
     
     RmMakeInstallRecordFile()
     
-    cmakeCmd=GetCmakeCmd( curPath )
-    DoCmd(cmakeCmd)
-    
-    makeclean="make clean"
-    DoCmd(makeclean)
-    
-    makeinstall = GetMakeInstallCmd()
-    DoCmd(makeinstall)
+    if ObserveCompileOrder == False:
+        cmakeCmd=GetCmakeCmd( curPath )
+        DoCmd(cmakeCmd)
+        
+        makeclean="make clean"
+        DoCmd(makeclean)
+        
+        makeinstall = GetMakeInstallCmd()
+        DoCmd(makeinstall)
 
     os.chdir(oldPath)
     logging.info("current path is: %s" % oldPath)
         
             
-def CompileSubDir(needCompSubDir , CompileDir):
+def CompileSubDir(needCompSubDir):
     #'techlib', '.git', 'servicelib', 'unittest', '.settings', 'spr', 'document', 'pcrf', 'hub'
     compileSubDir=['techlib', 'servicelib', 'unittest', 'spr', 'pcrf', 'hub']
     if  "perl" in needCompSubDir:
@@ -279,8 +301,18 @@ def CompileSubDir(needCompSubDir , CompileDir):
         HubQmdbOnlyFlag = True
         logging.warn(" QMDB Only model for hub")
     
+    if   ("techlib" in needCompSubDir) :
+            buildPath = GetBuildPath("techlib")
+            CompileBuildPath(buildPath)
+            needCompSubDir.remove("techlib")
+            
+    if  ("servicelib" in needCompSubDir) :
+            buildPath = GetBuildPath("servicelib")
+            CompileBuildPath(buildPath)
+            needCompSubDir.remove("servicelib")
+            
     #如果pcrf和unintest同时需要编译，则先编译pcrf 后编译 unittest
-    if   ("pcrf" in needCompSubDir) and ("unittest" in needCompSubDir):
+    if  ("pcrf" in needCompSubDir) and ("unittest" in needCompSubDir):
             buildPath = GetBuildPath("pcrf")
             CompileBuildPath(buildPath)
             
@@ -305,7 +337,7 @@ def CompileSubDir(needCompSubDir , CompileDir):
 def CompileAll():
     CompileDir = GetPCRFServerSubdir();
     needCompSubDir = GetParma(CompileDir)
-    CompileSubDir( needCompSubDir, CompileDir);
+    CompileSubDir( needCompSubDir);
 
 
 
