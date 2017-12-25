@@ -6,7 +6,7 @@ import pdb
 import logging
 
 logging.basicConfig(level=logging.INFO)
-
+#logging.basicConfig(level=logging.DEBUG)
 
 '''
 ×¼±¸£º
@@ -255,6 +255,8 @@ def GetCmakeCmd( curPath ):
         logging.debug(" hub  %s" % curPath)
         cmakeCmd += " -DCMAKE_INSTALL_PREFIX=${IMPSYSDIR} "
         cmakeCmd += " -DQMDB=QuickMDB "
+    else:
+        cmakeCmd += " -DCMAKE_INSTALL_PREFIX=$HOME " 
         
     if GDebugModle:
         cmakeCmd+="-DCMAKE_BUILD_TYPE=Debug "
