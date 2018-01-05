@@ -9,6 +9,8 @@ logging.basicConfig(level=logging.INFO)
 #logging.basicConfig(level=logging.DEBUG)
 
 '''
+请将脚本 防止在 $PCRF_HOME下
+
 准备：
 1、 设置  $PCRF_HOME 环境变量
 2、 设置$IMPSYSDIR 环境变量
