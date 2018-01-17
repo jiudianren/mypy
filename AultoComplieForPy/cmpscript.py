@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 #logging.basicConfig(level=logging.DEBUG)
 
 '''
-请将脚本 防止在 $PCRF_HOME下
+请将脚本 放置在 $PCRF_HOME下
 
 准备：
 1、 设置  $PCRF_HOME 环境变量
