@@ -3,13 +3,14 @@ import os
 import sys
 import time
 import pdb
+import glob
 import logging
 
 logging.basicConfig(level=logging.INFO)
 #logging.basicConfig(level=logging.DEBUG)
 
 '''
-请将脚本 防止在 $PCRF_HOME下
+请将脚本 放置在 $PCRF_HOME下
 
 准备：
 1、 设置  $PCRF_HOME 环境变量
@@ -244,7 +245,7 @@ def GetMakeInstallCmd():
     
     makeinstall="make -j "
     makeinstall += str( GMakejcout )
-    makeinstall +=" install | tee -a MIRSFILE"
+    makeinstall +=" install  2>&1 | tee -a MIRSFILE"
     makeinstall += strTime
     logging.debug(" cmd makeinstall is %s" ,makeinstall)
     return makeinstall
@@ -285,10 +286,31 @@ def CompileBuildPath(buildPath) :
         
         makeinstall = GetMakeInstallCmd()
         DoCmd(makeinstall)
-
+        if CheckFile() == 1:
+                logging.warn("Some thing erro in MAKE INSTALL")
+                os._exit()
+        
     os.chdir(oldPath)
     logging.info("current path is: %s" % oldPath)
-        
+
+def CheckFile():
+    f = glob.glob(r'./MIRSFILE*')
+    for py in f:
+        logging.info("check file name: %s" % py)
+        lines = open(py).readlines()  
+        fp = open('nginx.conf','w')  
+        for s in lines:  
+            if s.find("error:") != -1:
+                logging.warn("YOUR ERRO IS HERE :%s " % s)
+                fp.close()  
+                return 1;
+            if s.find("Error ") != -1:
+                fp.close()  
+                logging.warn("YOUR ERRO IS HERE :%s " % s)
+                return 1;
+        fp.close()
+        return 0    
+          
             
 def CompileSubDir(needCompSubDir):
     #'techlib', '.git', 'servicelib', 'unittest', '.settings', 'spr', 'document', 'pcrf', 'hub'
