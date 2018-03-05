@@ -253,11 +253,13 @@ def GetMakeInstallCmd():
 def GetCmakeCmd( curPath ):
     logging.debug(" curPath %s" % curPath)
     cmakeCmd="cmake "
-    
-    if (curPath.find("hub") >= 0) and ( HubQmdbOnlyFlag == True ):
+#    pdb.set_trace()
+    if (curPath.find("/hub") >= 0):
         logging.debug(" hub  %s" % curPath)
         cmakeCmd += " -DCMAKE_INSTALL_PREFIX=${IMPSYSDIR} "
-        cmakeCmd += " -DQMDB=QuickMDB "
+        global  HubQmdbOnlyFlag
+        if HubQmdbOnlyFlag:
+            cmakeCmd += " -DQMDB=QuickMDB "
     else:
         cmakeCmd += " -DCMAKE_INSTALL_PREFIX=$HOME " 
         
@@ -270,10 +272,10 @@ def GetCmakeCmd( curPath ):
 
 def CompileBuildPath(buildPath) :
     oldPath=os.path.abspath('.')
-    logging.info("current path is: %s" % oldPath)
+    logging.info("current path 1 is: %s" % oldPath)
     os.chdir(buildPath)
     curPath=os.path.abspath('.')
-    logging.info("current path is: %s" % curPath)
+    logging.info("current path 2 is: %s" % curPath)
     
     RmMakeInstallRecordFile()
     
@@ -323,7 +325,9 @@ def CompileSubDir(needCompSubDir):
         logging.warn("Release Modem")
         GDebugModle = False
 
+
     if "qmdb" in needCompSubDir:
+        global  HubQmdbOnlyFlag
         HubQmdbOnlyFlag = True
         logging.warn(" QMDB Only model for hub")
     
