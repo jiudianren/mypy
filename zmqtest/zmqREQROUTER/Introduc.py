@@ -1,0 +1,1 @@
+#http://www.cppblog.com/tx7do/archive/2013/02/26/198097.html
