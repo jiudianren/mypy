@@ -8,8 +8,8 @@ from __future__ import print_function
 import multiprocessing
 import zmq
 
-NBR_CLIENTS = 10
-NBR_WORKERS = 3
+NBR_CLIENTS = 200
+NBR_WORKERS = 4
 
 def client_task(ident):
     """Basic request-reply client using REQ socket."""
@@ -34,8 +34,8 @@ def worker_task(ident):
 
     while True:
         address, empty, request = socket.recv_multipart()
-        print("{}: {}".format(socket.identity.decode("ascii"),
-                              request.decode("ascii")))
+        print("{}: {} :{} ".format(socket.identity.decode("ascii"),
+                              request.decode("ascii"), address.decode("ascii")))
         socket.send_multipart([address, b"", b"OK"])
 
 def main():
@@ -71,6 +71,7 @@ def main():
             # Handle worker activity on the backend
             request = backend.recv_multipart()
             worker, empty, client = request[:3]
+            print("%s" % worker )
             if not workers:
                 # Poll for clients now that a worker is available
                 poller.register(frontend, zmq.POLLIN)
@@ -85,6 +86,8 @@ def main():
 
         if frontend in sockets:
             # Get next client request, route to last-used worker
+            #REQ TO ROUTER 的时候，ROUTER是能够获取REQ的地址的，并且  ROUTER 发消息给REQ的时候，需要加上这个地址。
+            #如果不加，会怎么样呢？
             client, empty, request = frontend.recv_multipart()
             worker = workers.pop(0)
             backend.send_multipart([worker, b"", client, b"", request])
