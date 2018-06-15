@@ -11,6 +11,8 @@ def openTask(id):
     webbrowser.open(url)
     
 print(0%2)
-openTask('1322487')
-openTask('1319895')
-openTask('1322188')
+
+#openTask('1322487')
+#openTask('1319895')
+#openTask('1322188')
+openTask('1296220')
