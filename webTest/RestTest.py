@@ -8,7 +8,7 @@ Port=':2017'
 
 TracelogDir='/pcrf/tracelog'
 Number='15077889999'
-NumberStr='/{' +Number +'}'
+NumberStr='/' +Number 
 
 
 def DealGet():
