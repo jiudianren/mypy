@@ -68,6 +68,7 @@ RedisÔÚÕæÊµÊÀ½çµÄ×îÖÕÓÃ·¨¼´ÎÒ½«ÔÚÕâÆªÎÄÕÂÖĞÌá³öµÄpub / sub¡£ÕâÊÇRedisÄÚÖÃµÄ×îÇ¿´
 	PUBLISH channel message
 	// Recieve messages from a channel
 	SUBSCRIBE channel
+	
 ½áÂÛ
 
 ÎÒÏ£ÍûÄã»áÏ²»¶ÕâĞ©RedisÔÚÕæÊµÊÀ½çµÄÊ¹ÓÃ¡£
