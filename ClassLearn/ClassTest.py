@@ -39,7 +39,11 @@ class Student:
 
 temp=80
 LStu=Student("ÀîÈı",temp,"sanlitun")
+print("print(LStu)")
 print(LStu)
+
+print("print(Student)")
+
 print(Student)
 LStu.printStu()
 temp=90

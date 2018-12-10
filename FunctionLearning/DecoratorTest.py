@@ -41,6 +41,8 @@ print(ff2())
 print("======3")
 print(now2.__name__)
 
+print("============")
+
 import functools
 def log2(func):
     @functools.wraps(func)
