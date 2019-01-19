@@ -1,9 +1,11 @@
 
-
-
 from math import sqrt
+from model.Mlogging import clog
 
-
+logger=clog()
+  
+  
+  
 # 5.2
 def fivePtwo ():
     x,y,z=1,2,3
@@ -37,6 +39,28 @@ def fivePfive():
     
     
     fivePfivePSix()
+
+
+def fivePsix():
     
+    girls = ['alice', 'bernice', 'clarice']
+    boys = ['chris', 'arnold', 'bob']
+    rs = [b+'+'+g for b in boys for g in girls if b[0] == g[0]]
+    print(rs)
+
+def fivePseven():
+    x = 30
+    #删除的仅仅是名称
+    del x
+    y = ["hello", "world"]
+    x=y
+    x[1] = "python"
+    del y
+    print( x)
+
+
 fivePtwo()
 fivePfive()
+fivePsix()
+fivePseven()
+

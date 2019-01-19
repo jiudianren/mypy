@@ -1,5 +1,11 @@
 # coding=gbk
 
+
+from model.Mlogging import pylearnLog
+from PIL.ImImagePlugin import number
+
+logger = pylearnLog()
+
 a= abs
 print(a(-1))
 
@@ -27,17 +33,11 @@ def move(x, y, step, angle=0):
     ny = y - step * math.sin(angle)
     return nx, ny
 
-x, y = move(100, 100, 60, math.pi / 6)
-print(x, y)
-def cal(*numbers):
-    summ=0
-    for n in numbers:
-        summ=summ+n*n
-    return summ
+x, y = move(100, 100, 60, math.pi/6)
+logger.debug( (x,y))
 
-nummm={1,2,3,4,5}
 
-print(cal(*nummm))
+
 
 
 #可变参数
@@ -46,10 +46,11 @@ print("可变参数")
 def calc(numbers):
     sum = 0
     for n in numbers:
-        print("可变参数:%d " % n)
+        logger.debug("可变参数:%d " % n)
         sum = sum + n * n
     return sum
-#相当于 传入了一个list 
+
+#相当于 传入了一个tuple 
 print(calc( (1,2,3) ))
 
 # 可变参数 自动组装成  自动组装为一个tuple
@@ -65,6 +66,7 @@ print( calc2(1,2,3) )
 print("关键字参数")
 
 def person(name, age, **kw):
+    "parm ** is a dict"
     print('name:', name, 'age:', age, 'other:', kw)
     
 person("lisi", 12,city='nanjing',heavy=172,tal='64kg')
@@ -89,10 +91,10 @@ person3('Jack', 24, city='Beijing', addr='Chaoyang', zipcode=123456)
 
 
 def f1(a, b, c=0, *args, **kw):
-    print('a =', a, 'b =', b, 'c =', c, 'args =', args, 'kw =', kw)
+    print('f1 a =', a, 'b =', b, 'c =', c, 'args =', args, 'kw =', kw)
 
 def f2(a, b, c=0, *, d, **kw):
-    print('a =', a, 'b =', b, 'c =', c, 'd =', d, 'kw =', kw)
+    print('f2 a =', a, 'b =', b, 'c =', c, 'd =', d, 'kw =', kw)
     
     
 f1(1, 2)
