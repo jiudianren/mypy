@@ -72,6 +72,8 @@ def person(name, age, **kw):
 person("lisi", 12,city='nanjing',heavy=172,tal='64kg')
 
 
+logger.debug(help(person))
+
 # 命名关键字参数   只接收city和job作为关键字参数
 print("命名关键字参数")
 def person2(name, age, *, city, job):
@@ -116,3 +118,30 @@ f2(*args, **kw)
 #在Python中定义函数，可以用必选参数、默认参数、可变参数、关键字参数和命名关键字参数，
 #这5种参数都可以组合使用。但是请注意，
 #参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数
+
+
+
+#作用域
+logger.debug("作用域")
+ns=1
+scope = vars()
+logger.debug(scope)
+scope["ns"]=2
+
+logger.debug(ns)
+
+
+
+gx=1
+def usr_logcal():
+    gx =2
+
+usr_logcal()
+logger.debug("gx %d",gx)
+
+def user_global():
+    global gx
+    gx =2
+
+user_global()
+logger.debug("gx %d",gx)

@@ -1,4 +1,8 @@
 # coding=gbk
+
+from model.Mlogging import pylearnLog
+import abc
+logger = pylearnLog()
 '''
 Created on 2017年7月13日
 
@@ -26,41 +30,150 @@ Created on 2017年7月13日
 所以，仍然可以通过_Student__name来访问__name变量：
 '''
 class Student:
+    "the doc about Student"
+    print("before define Student")
+    #belong to all instance of the student
+    
+    time  = 0 
     def __init__(self,name,score,address):
+        logger.debug("__init__")
+        
+        Student.time+=1
+        
         self.name=name
         self.score=score
         #__表示私有变量
         self.__privateVal=address
     
     def printStu(self):
-        print('name:',self.name,"score",self.score,"address",self.__privateVal)
+        self.__printImp()
+        
         
 
+#私有方法
+    def __printImp(self):
+        print(' __printImp : name:',self.name,"score",self.score,"address",self.__privateVal)
+        
+    def cPrint(self):
+        print("I am student's cprint:")
 
+
+
+def cPrint():
+    print("I am gloabl cPrint")
+
+
+logger.debug( help(Student))
 temp=80
 LStu=Student("李三",temp,"sanlitun")
-print("print(LStu)")
-print(LStu)
+logger.debug("print(LStu):")
+logger.debug(LStu)
+logger.debug("print(Student)")
+logger.debug(Student)
 
-print("print(Student)")
-
-print(Student)
 LStu.printStu()
+logger.debug(Student.printStu(LStu))
+
 temp=90
 LStu.printStu()
 
-print(LStu.name)
+logger.debug(LStu.name)
 #print(LStu.__privateVal)
 
-print("cannt change the private var")
+logger.debug("cannt change the private var")
 LStu.__privateVal="tiananmen"
 
-print( LStu.__privateVal )
+logger.debug( LStu.__privateVal )
 LStu.printStu()
 
 
+logger.debug("属性 ，函数 和方法")
+
+LStu.cPrint()
+
+myPrint = LStu.cPrint
+myPrint()
+
+#可以用函数替换类的方法， 
+#可以理解为方法，就是绑定了第一个参数为self的函数
+
+LStu.cPrint = cPrint
+LStu.cPrint()
+
+logger.debug("类的 命名空间")
+
+logger.debug(Student.time)
+logger.debug(LStu.time)
+
+newstu=Student("new", 10,"address")
+logger.debug(LStu.time)
+logger.debug(newstu.time)
 
 
+logger.debug("继承")
+
+class Filter:
+    def __init__(self):
+        self.block=[]
+    def filter(self,squence):
+        return [x for x in squence if x not in self.block ]
+
+
+class SPFilter(Filter):
+    def __init__(self, block):
+        self.block = block
+        
+        
+
+f = Filter()
+logger.debug( f.filter([1,2,3]))
+
+sf=SPFilter("SP")
+logger.debug( sf.filter( ["a", "b", "SP", "SY"]))
+
+logger.debug(sf.__class__)
+logger.debug( issubclass(SPFilter,Filter))
+logger.debug( SPFilter.__base__)
+logger.debug( Filter.__base__)
+
+
+logger.debug("多重继承")
+
+#必须在class语句中小心排列这些超类，因为位于前面的类的方法将覆盖位于后面的类的方法。
+
+
+
+logger.debug("接口和内省")
+
+class Talker:
+    
+    def talk(self):
+        logger.debug(" hi ,my value is", self.value)
+        
+
+tk = Talker()
+logger.debug(hasattr( tk,"talk"))
+logger.debug(callable( getattr(tk, "talk")))
+
+
+
+logger.debug("抽象类")
+
+
+from  abc import ABC, abstractmethod
+
+#logger.debug( help(abc))
+#logger.debug(help(ABC))
+
+logger.debug(help(abstractmethod))
+             
+             
+class ABTalk(ABC):
+    @abstractmethod
+    def talk(self):
+        pass
+    
+    
 '''
 静态语言 vs 动态语言
 
