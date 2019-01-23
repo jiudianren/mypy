@@ -1,6 +1,23 @@
 # coding=gbk
 
 
+from model.Mlogging import pylearnLog
+from PIL.ImImagePlugin import number
+
+logger = pylearnLog()
+
+
+def eightPfour():
+    try:
+        1 / 0
+    except NameError:
+        logger.debug("Unknown variable")
+    else:
+        logger.debug("That went well!")
+    finally:
+        logger.debug("Cleaning up.")
+
+
 def DiveErro():
     try:
         print('try...')

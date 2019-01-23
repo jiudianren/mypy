@@ -31,10 +31,12 @@ Created on 2017年7月13日
 '''
 class Student:
     "the doc about Student"
+    
+    #print将会在第一次实例化的时候被执行
     print("before define Student")
     #belong to all instance of the student
-    
     time  = 0 
+    #构造函数
     def __init__(self,name,score,address):
         logger.debug("__init__")
         
@@ -45,10 +47,16 @@ class Student:
         #__表示私有变量
         self.__privateVal=address
     
+    #析构函数
+    #也称作析构函数（destructor）。这个方法在对象被销毁
+    #（作为垃圾被收集）前被调用，但鉴于你无法知道准确的调用时间，建议尽可能不要使用__del__
+    def __del__(self):
+        logger.debug("__del__")
+        
     def printStu(self):
         self.__printImp()
         
-        
+
 
 #私有方法
     def __printImp(self):
@@ -56,6 +64,20 @@ class Student:
         
     def cPrint(self):
         print("I am student's cprint:")
+
+
+class MiddlerSchoolStu(Student):
+    
+        #重写构造函数
+        #todo
+        #。为此，有两种方法：调用未关联的超类构造函数，以及使用函数super。接下来的两节将介绍这两种方法。
+        def __init__(self):
+            
+        #重写
+        def __printImp(self):
+            print('MiddlerSchoolStu  __printImp : name:',\
+                  self.name,"score",self.score,"address",self.__privateVal)
+        
 
 
 
@@ -173,7 +195,13 @@ class ABTalk(ABC):
     def talk(self):
         pass
     
-    
+
+
+
+#继承
+
+
+ 
 '''
 静态语言 vs 动态语言
 
