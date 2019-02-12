@@ -36,7 +36,8 @@ class Student:
     print("before define Student")
     #belong to all instance of the student
     time  = 0 
-    #构造函数
+    #特殊函数 __xx__
+    #构造函数 
     def __init__(self,name,score,address):
         logger.debug("__init__")
         
@@ -55,28 +56,30 @@ class Student:
         
     def printStu(self):
         self.__printImp()
-        
 
 
-#私有方法
+    #私有方法
     def __printImp(self):
         print(' __printImp : name:',self.name,"score",self.score,"address",self.__privateVal)
         
     def cPrint(self):
         print("I am student's cprint:")
 
+    #可以运行 通过 Student.no_self_param_func()调用就可以了
+    def no_self_param_func():
+        print("no_self_param_func")
+        
 
 class MiddlerSchoolStu(Student):
-    
-        #重写构造函数
-        #todo
-        #。为此，有两种方法：调用未关联的超类构造函数，以及使用函数super。接下来的两节将介绍这两种方法。
-        def __init__(self):
+    #重写构造函数
+    #todo
+    #为此，有两种方法：调用未关联的超类构造函数，以及使用函数super。接下来的两节将介绍这两种方法。
+    def __init__(self):
+        pass
             
-        #重写
-        def __printImp(self):
-            print('MiddlerSchoolStu  __printImp : name:',\
-                  self.name,"score",self.score,"address",self.__privateVal)
+    #重写
+    def __printImp(self):
+        print('MiddlerSchoolStu __printImp: name:', self.name,"score",self.score,"address",self.__privateVal)
         
 
 
@@ -96,6 +99,12 @@ logger.debug(Student)
 LStu.printStu()
 logger.debug(Student.printStu(LStu))
 
+logger.debug(Student.no_self_param_func())
+
+##直接访问私有方法
+logger.debug("derector visit the private func")
+LStu._Student__printImp()
+
 temp=90
 LStu.printStu()
 
@@ -108,7 +117,6 @@ LStu.__privateVal="tiananmen"
 logger.debug( LStu.__privateVal )
 LStu.printStu()
 
-
 logger.debug("属性 ，函数 和方法")
 
 LStu.cPrint()
@@ -116,8 +124,7 @@ LStu.cPrint()
 myPrint = LStu.cPrint
 myPrint()
 
-#可以用函数替换类的方法， 
-#可以理解为方法，就是绑定了第一个参数为self的函数
+#可以用函数替换类的方法，  可以理解为方法，就是绑定了第一个参数为self的函数
 
 LStu.cPrint = cPrint
 LStu.cPrint()

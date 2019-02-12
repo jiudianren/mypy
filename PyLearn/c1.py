@@ -1,8 +1,5 @@
 
 print(-10//3)
-
-
-
 print( '"Hello, world!" she said')
 print( 'Let\'s go!') 
 
