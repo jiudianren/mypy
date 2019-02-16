@@ -201,6 +201,46 @@ class ABTalk(ABC):
 #继承
 
 
+
+class Rectangle:
+    def __init__ (self):
+        self.width = 0
+        self.height = 0
+    def set_size(self, size):
+        self.width, self.height = size
+    def get_size(self):
+        return self.width, self.height
+    size = property(get_size, set_size)
+   
+
+def testProperty():
+    
+    rectan = Rectangle()
+    rectan.width=10
+    rectan.height=5
+    logger.debug(rectan.size)
+    rectan.size =12,15
+    logger.debug(rectan.size)
+    
+
+
+logger.debug("静态方法和类方法")
+
+class MyClass:
+    
+    @staticmethod
+    def smeth():
+        print('This is a static method')
+    @classmethod
+    def cmeth(cls):
+        print('This is a class method of', cls)
+
+logger.debug(MyClass.cmeth())
+logger.debug(MyClass.smeth())
+
+
+
+    
  
 '''
 静态语言 vs 动态语言

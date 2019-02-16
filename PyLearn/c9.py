@@ -53,5 +53,9 @@ class CounterList(list):
 
         
 ArithmeticSequence(1,2).test()
-   
-    
+
+
+#9.5.1
+
+
+      
