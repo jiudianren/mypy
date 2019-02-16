@@ -1,10 +1,7 @@
-
 from math import sqrt
-from model.Mlogging import clog
+from model.Mlogging import pylearnLog
 
-logger=clog()
-  
-  
+logger = pylearnLog()
   
 # 5.2
 def fivePtwo ():
@@ -18,7 +15,7 @@ def fivePtwo ():
 
 
 def fivePfivePSix():
-    for n in range(99, 81, -1):
+    for n in range(99, 27, 81, -1):
         root = sqrt(n)
         if root == int(root):
             print(n)

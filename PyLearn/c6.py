@@ -7,7 +7,7 @@ logger=pylearnLog()
 
 def hello(name):
     " NOTE about this func hello"
-    return "heelo"+name
+    return "hello "+name
 
 def SixpOne():
     print(hello.__doc__)
@@ -38,7 +38,27 @@ def testPRef():
     pRef(ref)
     print(ref)
     
+def pFourPTwo():
+    
+    names = ['Mrs. Entity', 'Mrs. Thing']
+    n = names # 再次假装传递名字作为参数
+    n[0] = 'Mr. Gumby' # 修改列表
+    logger.debug(names)
+    
+    logger.debug("is " )
+    logger.debug((n is names)) 
+    logger.debug("== ") 
+    logger.debug((n == names)) 
+    
+    n2=names[:]
+    logger.debug("is " )
+    logger.debug((n2 is names)) 
+    logger.debug("== ") 
+    logger.debug((n2 == names)) 
+   
+    
 def pFour(): 
+    pFourPTwo()
     testPconst()
     testPRef()
     
