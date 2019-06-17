@@ -13,13 +13,17 @@ cmd=r"C:\Windows\System32"
 eclipse="F:\eclipse\eclipse.exe"
 pyeclipse="F:\pyeclipse\pyeclipse.exe"
 
-app = application.Application().start(chrome)
+#app = application.Application().start(chrome)
+print(chrome.__len__())
 def readapps(startfile):
     fp = open(startfile, 'r')
     apps=[]
     while True :
         item =  fp.readline()    
         if item :
+            if item.find('\n') :
+                item.strip('\n')
+                print(item)
             apps.append(item)
         else :
             break
@@ -28,7 +32,6 @@ def readapps(startfile):
 
 def startpro(apps):
     for it in apps:
-        
         tips=r"start up:"
         tips += it
         win32api.MessageBox(0, tips, "提示")
@@ -39,7 +42,7 @@ def startpro(apps):
 win32api.MessageBox(0, "即将开始启动程序", "提示")
 
 
-startfile="F:\jiudianren\startup.txt"   
+startfile="F:\jiudianren\startup1.txt"   
 apps = readapps(startfile) 
 startpro(apps)
     
