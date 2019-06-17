@@ -1,32 +1,30 @@
 # -*- coding: UTF-8 -*-
 
 import io
-from pywinauto import application
+import json
 import time
+
+from pywinauto import application
 import win32api,win32con
 
+#路径需要使用双斜线
+#{
+#"local":["C:\\Users\\10259187\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe","F:\\Program Files\\ListaryProv\\Listary Pro v5.00.2843\\Listary Pro\\Listary.exe" ]
+#}
 
-im=r"C:\Program Files (x86)\ZTE\ZTE IM9\IM9.exe"
 chrome=r"C:\Users\10259187\AppData\Local\Google\Chrome\Application\chrome.exe"
-listray="F:\Program Files\ListaryProv\Listary Pro v5.00.2843\Listary Pro\Listary.exe"
-cmd=r"C:\Windows\System32"
-eclipse="F:\eclipse\eclipse.exe"
-pyeclipse="F:\pyeclipse\pyeclipse.exe"
-
 #app = application.Application().start(chrome)
 print(chrome.__len__())
+
+
 def readapps(startfile):
-    fp = open(startfile, 'r')
-    apps=[]
-    while True :
-        item =  fp.readline()    
-        if item :
-            if item.find('\n') :
-                item.strip('\n')
-                print(item)
-            apps.append(item)
-        else :
-            break
+    apps =[]
+    with open(startfile,'r') as load_f:
+        print(startfile)
+        loadItem = json.load(load_f)
+        for it in loadItem["local"] :
+            print(it)
+            apps.append(it)
     return apps        
 
 
@@ -39,10 +37,9 @@ def startpro(apps):
         app2 = application.Application().start(it)
         time.sleep(10)
 
-win32api.MessageBox(0, "即将开始启动程序", "提示")
 
-
-startfile="F:\jiudianren\startup1.txt"   
+startfile="F:\jiudianren\startup.json"
+win32api.MessageBox(0, "即将开始启动程序", "提示")   
 apps = readapps(startfile) 
 startpro(apps)
     
