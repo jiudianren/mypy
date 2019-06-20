@@ -1,13 +1,6 @@
 # coding=gbk
 
 
-
-from model.Mlogging import pylearnLog
-logger = pylearnLog()
-
-
-
-
 class  Computer(object):
     
     
