@@ -1,0 +1,16 @@
+https://blog.csdn.net/u012189747/article/details/75769676
+
+
+#-*-coding:utf-8-*-
+
+from pywinauto import application
+import time
+
+app = application.Application().start('F:\Program Files (x86)\Mobatek\MobaXterm\MobaXterm.exe')
+time.sleep(2)
+
+window_title=['MobaXterm']
+print(app[window_title].wrapper_object())
+print(app[window_title].print_control_identifiers())
+
+#https://www.cnblogs.com/Anec/p/10370401.html
