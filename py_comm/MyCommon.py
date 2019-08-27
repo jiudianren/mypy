@@ -2,24 +2,9 @@
 # author jiudianren
 # time:2019/6/28 10:52
 
-import logging
 import os
-from path import get_os_path, get_os_file_path,msg_box
-
-def pylearnLog(log_level=logging.DEBUG ):
-    # log实例
-    logger = logging.getLogger("GetMacFromPcap")
-    # 创建handler 写到控制台，或者日志文件等
-    hds = logging.StreamHandler()
-    #fds = logging.FileHandler("C://Users//10259187//Desktop//Test//log.txt",mode='w', encoding='utf-8')
-    # 给实例增加处理方式
-    logger.addHandler(hds)
-    # 设置日志级别
-    # logger.setLevel(logging.WARN)
-    logger.setLevel(log_level)
-    return logger
-
-logger = pylearnLog()
+from path import get_os_path, get_os_file_path, msg_box
+from mylogger import logger
 
 def get_input_filename(file_type=1):
     prompt = ''
@@ -39,6 +24,7 @@ def get_input_filename(file_type=1):
     print("please comfirm your input:{0}".format(file_name))
     return file_name
 
+
 def get_pcap_files(tip_dir):
     file_list = []
     pcap_dir = os.path.join(tip_dir, "pcap")
@@ -52,6 +38,7 @@ def get_pcap_files(tip_dir):
         file_list.append(file_name)
     return  file_list
 
+
 def get_dir_files(dir):
     file_list = []
     if not os.access(dir,os.R_OK) :
@@ -62,3 +49,16 @@ def get_dir_files(dir):
         file_list.append(file_name)
     return  file_list
 
+
+def get_sub_str(line_str, start_str, end_str):
+    """
+    :param line_str: 待处理行
+    :param start_str: 要获取子串的开始字符串
+    :param end_str:要获取子串的结束字符串
+    :return:
+    比如 从[PS_SERVICE_FWD_VMB_X86_64_RELEASE]PreformReportTime: [2019-08-16 17:41:12]"获取时间
+    get_sub_str（，‘e: [’，‘]’）
+    """
+    sub_str = line_str[line_str.find(start_str) + len(start_str):]
+    sub_str = sub_str[:sub_str.find(end_str)]
+    return sub_str

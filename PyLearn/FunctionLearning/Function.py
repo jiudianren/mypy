@@ -145,3 +145,12 @@ def user_global():
 
 user_global()
 logger.debug("gx %d",gx)
+
+# 三元表达式
+def max2(x, y):
+#     if x > y:
+#         return x
+#     else:
+#         return y
+
+print(x if x > y else y ) # 函数中的应用

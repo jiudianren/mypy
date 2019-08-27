@@ -1,0 +1,4 @@
+./PyPcap/pcap_mac.csv
+./PyPcap/.settings/*
+./PyPcap/.idea/*
+./PyPcap/__pycache__/*

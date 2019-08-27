@@ -94,5 +94,39 @@ def check_new_file(tip,file_name):
     return file_name
 
 
+def get_dir_files(file_path):
+    """
+    :param file_path: 文件夹路径
+    :return: 文件夹下的所有文件
+    """
+    file_list = []
+    if not os.access(file_path,os.R_OK) :
+        print("NO pcap FILE PATH IN {0}".format(file_path))
+        return file_list
+    for file_name in os.listdir(file_path):
+        file_name = os.path.join(file_path, file_name)
+        file_list.append(file_name)
+    return file_list
+
+
+def get_new_file_full_path(file_name):
+    """
+    :param file_name: 文件名
+    :return: 文件的全路径
+    如果有重复文件，则会在文件后加序号以区分，序号递增
+    """
+    aim_dir = get_os_path("选取结果文件将存放的目录")
+    file_name = os.path.join(aim_dir, file_name)
+    index = 0
+    while os.access(os.path.join(aim_dir, file_name), os.R_OK) == True:
+        index += 1
+        name = file_name.split(".")
+        inner = name[0].split("_")
+        name[0] = inner[0]+"_"+inner[1] + "_"+str(index)
+        file_name = (name[0] + "." + name[1])
+
+    file_name = os.path.join(aim_dir, file_name)
+    return file_name
+
 #print(get_os_path("tip"))
 #print(get_os_file_path())
