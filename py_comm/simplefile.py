@@ -24,6 +24,44 @@ import mimetypes
 import re
 from io import BytesIO
 
+import  binhex
+from mylogger import logger
+
+def tran_code(str):
+    if len(str.split(".")) != 2:
+        logger.debug("2222")
+        return str
+    if str.split(".")[0].find('&#') == -1:
+        logger.debug("333")
+        return str
+    text = str.split(".")[0].replace('&#', '')
+    logger.debug(text)
+    text = [i for i in text.split(';') if i]
+    logger.debug(text)
+    out =""
+    for it in text:
+        if it.isdigit():
+            it = hex(int(it))
+            it.replace('0x', '')
+            flag = '\\u'
+            it += flag + format(it, '0>4s')
+            logger.debug(f"in {it} ")
+            aa= (it.encode('utf-8').decode('unicode-escape'))
+            logger.debug("aa")
+            out += aa
+        else:
+            out += it
+    print(out)
+    text = [hex(int(i)) for i in text]
+    text = [i.replace('0x', '') for i in text]
+    string = ' '
+    flag = '\\u'
+    for i in text:
+        string += flag + format(i, '0>4s')
+    aimstr = string.encode('utf-8').decode('unicode-escape')
+    aimstr =  aimstr +"."+ str.split(".")[1]
+    logger.debug( aimstr)
+    return aimstr
 
 class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET/HEAD/POST commands.
@@ -97,6 +135,8 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         if not fn:
             return (False, "Can't find out file name...")
         path = self.translate_path(self.path)
+        logger.debug(fn[0])
+        logger.debug(tran_code(fn[0]))
         fn = os.path.join(path, fn[0])
         line = self.rfile.readline()
         remainbytes -= len(line)
