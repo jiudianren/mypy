@@ -234,7 +234,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             return None
         list.sort(key=lambda a: a.lower())
         f = BytesIO()
-        displaypath = cgi.escape(urllib.parse.unquote(self.path))
+        displaypath = html.escape(urllib.parse.unquote(self.path))
         f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
         f.write(("<html>\n<title>Directory listing for %s</title>\n" % displaypath).encode())
         f.write(("<body>\n<h2>Directory listing for %s</h2>\n" % displaypath).encode())
