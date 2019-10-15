@@ -23,7 +23,7 @@ import shutil
 import mimetypes
 import re
 from io import BytesIO
-
+from http.server import HTTPServer, BaseHTTPRequestHandler
 
 def tran_code(str):
     print(str)
@@ -342,10 +342,13 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         '.h': 'text/plain',
     })
 
+host = ('localhost', 8005)
 
-def test(HandlerClass=SimpleHTTPRequestHandler,
-         ServerClass=http.server.HTTPServer):
-    http.server.test(HandlerClass, ServerClass)
+def test(HandlerClass=SimpleHTTPRequestHandler):
+    server = HTTPServer(host, HandlerClass)
+    print("Starting server, listen at: %s:%s" % host)
+    server.serve_forever()
+
 
 
 if __name__ == '__main__':
