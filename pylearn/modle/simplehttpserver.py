@@ -22,8 +22,9 @@ import cgi
 import shutil
 import mimetypes
 import re
-
+import sys
 import html
+import getopt
 
 
 from io import BytesIO
@@ -346,14 +347,45 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         '.h': 'text/plain',
     })
 
-host = ('localhost', 8085)
 
-def test(HandlerClass=SimpleHTTPRequestHandler):
+ip = 'localhost'
+port = 8085
+dir = ""
+
+
+def test(ip,port,dir):
+    HandlerClass = SimpleHTTPRequestHandler
+
+    host =(ip,int(port))
+    print(f"{ip}:{port}_{dir}")
     server = HTTPServer(host, HandlerClass)
     print("Starting server, listen at: %s:%s" % host)
     server.serve_forever()
 
 
+def getargs(argv):
+
+    global  port
+    global  ip
+    global  dir
+
+    try:
+        opts, args = getopt.getopt(argv, "hi:p:d:", ["ip=", "port=" ,"dir="])
+    except getopt.GetoptError:
+        print('httpfile.py -i <ip>  -p <port> -d <dir>  -h help')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('httpfile.py -i <ip>  -p <port> -d <dir>  -h help')
+            sys.exit()
+        elif opt in ("-i", "--ip"):
+            ip = arg
+        elif opt in ("-p", "--port"):
+            port = arg
+        elif opt in ("-d", "--dir"):
+            dir = arg
+    print( f"{ip}_{port}_{dir}")
 
 if __name__ == '__main__':
-    test()
+    getargs(sys.argv[1:])
+    test(ip,port ,dir)
