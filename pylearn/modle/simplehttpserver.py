@@ -22,6 +22,10 @@ import cgi
 import shutil
 import mimetypes
 import re
+
+import html
+
+
 from io import BytesIO
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
@@ -342,7 +346,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         '.h': 'text/plain',
     })
 
-host = ('localhost', 8005)
+host = ('localhost', 8085)
 
 def test(HandlerClass=SimpleHTTPRequestHandler):
     server = HTTPServer(host, HandlerClass)
