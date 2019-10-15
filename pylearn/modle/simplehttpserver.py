@@ -25,6 +25,40 @@ import re
 from io import BytesIO
 
 
+def tran_code(str):
+    print(str)
+    if len(str.split(".")) != 2:
+        print("2222")
+        return str
+    if str.split(".")[0].find('&#') == -1:
+        print("333")
+        return str
+    text = str.split(".")[0].replace('&#', '')
+    print(text)
+    text = [i for i in text.split(';') if i]
+    print(text)
+
+    string = ""
+    flag = '\\u'
+    for it in text:
+        if it.isdigit() and len(it)== 5:
+            print("-------")
+            print(it)
+            ss = hex(int(it))
+            print(type(ss))
+            if ss.find("0x") != -1:
+                ss = ss[ss.find("0x")+2:]
+            temp =  flag + format(ss, '0>4s')
+            temp = temp.encode('utf-8').decode('unicode-escape')
+            print(temp)
+            string += temp
+        else:
+            string += it
+
+    string += "."
+    string += str.split(".")[1]
+    return string
+
 class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET/HEAD/POST commands.
 
@@ -60,6 +94,8 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         f = BytesIO()
         f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
         f.write(b"<html>\n<title>Upload Result Page</title>\n")
+        f.write(b''' <head>\n <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> </head>\n''')
+
         f.write(b"<body>\n<h2>Upload Result Page</h2>\n")
         f.write(b"<hr>\n")
         if r:
@@ -83,21 +119,31 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     def deal_post_data(self):
         content_type = self.headers['content-type']
+        print(f'content_type{content_type}')
         if not content_type:
             return (False, "Content-Type header doesn't contain boundary")
         boundary = content_type.split("=")[1].encode()
         remainbytes = int(self.headers['content-length'])
+        print(f"remainbytes {remainbytes}")
         line = self.rfile.readline()
         remainbytes -= len(line)
         if not boundary in line:
             return (False, "Content NOT begin with boundary")
         line = self.rfile.readline()
         remainbytes -= len(line)
-        fn = re.findall(r'Content-Disposition.*name="file"; filename="(.*)"', line.decode())
+
+        fn = re.findall(r'Content-Disposition.*name="file"; filename="(.*)"', line.decode("GBK","ignore"))
         if not fn:
             return (False, "Can't find out file name...")
         path = self.translate_path(self.path)
-        fn = os.path.join(path, fn[0])
+
+        print(f"fn[0] {fn[0]}")
+        print(f"fn[0] {fn}")
+
+        print(f"fn[0] {tran_code(fn[0])}")
+        fname = tran_code(fn[0])
+        fn = os.path.join(path, fname)
+
         line = self.rfile.readline()
         remainbytes -= len(line)
         line = self.rfile.readline()
@@ -136,7 +182,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
         """
         path = self.translate_path(self.path)
-        print("send_head start")
+        print(f"send_head start {path}")
 
         f = None
         if os.path.isdir(path):
@@ -148,12 +194,14 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
                 return None
             for index in "index.html", "index.htm":
                 index = os.path.join(path, index)
+                print(f"index {index}")
                 if os.path.exists(index):
                     path = index
                     break
             else:
                 return self.list_directory(path)
         ctype = self.guess_type(path)
+        print(f"ctype {ctype}")
         try:
             # Always read in binary mode. Opening files in text mode may cause
             # newline translations, making the actual size of the content
@@ -165,6 +213,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", ctype)
         fs = os.fstat(f.fileno())
+        print(f"fs {fs}")
         self.send_header("Content-Length", str(fs[6]))
         self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
         self.end_headers()
@@ -196,16 +245,21 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         f.write(b"<hr>\n<ul>\n")
         for name in list:
             fullname = os.path.join(path, name)
+            print(f"fullname {fullname}")
             displayname = linkname = name
+
             # Append / for directories or @ for symbolic links
             if os.path.isdir(fullname):
                 displayname = name + "/"
                 linkname = name + "/"
+                print(f"displayname {displayname}")
+                print(f"linkname {linkname}")
             if os.path.islink(fullname):
                 displayname = name + "@"
+                print(f"displayname {displayname}")
                 # Note: a link to a directory displays with @ and links with /
             f.write(('<li><a href="%s">%s</a>\n'
-                     % (urllib.parse.quote(linkname), cgi.escape(displayname))).encode())
+                     % (urllib.parse.quote(linkname), displayname)).encode("GBK"))
         f.write(b"</ul>\n<hr>\n</body>\n</html>\n")
         length = f.tell()
         f.seek(0)
@@ -251,6 +305,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         to copy binary data as well.
 
         """
+        
         shutil.copyfileobj(source, outputfile)
 
     def guess_type(self, path):
