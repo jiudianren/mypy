@@ -30,6 +30,11 @@ import getopt
 from io import BytesIO
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
+
+ip = 'localhost'
+port = 8085
+dir = ""
+
 def tran_code(str):
     print(str)
     if len(str.split(".")) != 2:
@@ -143,7 +148,6 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         path = self.translate_path(self.path)
 
         print(f"fn[0] {fn[0]}")
-        print(f"fn[0] {fn}")
 
         print(f"fn[0] {tran_code(fn[0])}")
         fname = tran_code(fn[0])
@@ -186,6 +190,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         None, in which case the caller has nothing further to do.
 
         """
+        print(f"selft.path {self.path}")
         path = self.translate_path(self.path)
         print(f"send_head start {path}")
 
@@ -286,9 +291,18 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
         path = path.split('?', 1)[0]
         path = path.split('#', 1)[0]
         path = posixpath.normpath(urllib.parse.unquote(path))
+        print(f"path {path}")
         words = path.split('/')
         words = [_f for _f in words if _f]
-        path = os.getcwd()
+        global  dir
+        path = ""
+        if os.path.isdir(dir):
+            path =dir
+        else:
+            path = os.getcwd()
+
+
+        print(f"path {path}")
         for word in words:
             drive, word = os.path.splitdrive(word)
             head, word = os.path.split(word)
@@ -348,9 +362,7 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
     })
 
 
-ip = 'localhost'
-port = 8085
-dir = ""
+
 
 
 def test(ip,port,dir):
