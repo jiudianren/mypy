@@ -3,15 +3,16 @@
 # time:2019/11/5 16:02
 
 
-from setuptools import  setup
+from setuptools import  setup ,find_packages
 
 
 setup(
 
-    name = "jiudianren_py_com",
-    version = '0.19.11.05',
+    name = "jdrpycom",
+    version = '19.11.05',
     long_description ="""
     jiudianren's public tool for myself 
     """,
-    install_requires =[]
+    install_requires =[],
+    packages = find_packages()
 )
