@@ -8,5 +8,6 @@ pip uninstall <package-name>
 
 # 测试代码
 
-import pycom.helle_world  
-pycom.helle_world.hello()  
+import pycom.helloWorld
+pycom.helloWorld.hello()  
+
