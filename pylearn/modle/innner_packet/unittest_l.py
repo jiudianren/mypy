@@ -7,6 +7,9 @@ import  unittest
 
 '''
 https://blog.csdn.net/u013378642/article/details/82386226
+https://www.cnblogs.com/xiaoxiaolvdou/p/9503090.html
+https://docs.python.org/2/library/unittest.html
+
 '''
 
 # TestCase
@@ -58,16 +61,31 @@ class TestCase_02(unittest.TestCase):  # 继承unittest.TestCase
         print('tearDownClass 这是所有case的后置条件02')
 
 
+def http_run():
+    fp = open(os.getcwd() + "/test_report.html", "wb")
+    runner = HTMLTestRunner(stream=fp,
+                            title="测试报告标题",
+                            description="测试报告描述信息",
+                            tester="测试者")
+    runner.run(s)
 
-if __name__ == '__main__':
+
+
+def text_runner():
     #TestSuite
     # unittest.main() # 使用main()直接运行时，将按case的名称顺序执行
     suite = unittest.TestSuite()
 
-    suite.addTest(TestCase_01('test_01'))  # 将需要执行的case添加到Test Suite中，没有添加的不会被执行
-    suite.addTest(TestCase_02('test_02'))  # 将需要执行的case添加到Test Suite中，没有添加的不会被执行
+    #TestCase_01('testFirst_01') 测试用例类名（“测试的方法”）
+    suite.addTest(TestCase_01('testFirst_01'))  # 将需要执行的case添加到Test Suite中，没有添加的不会被执行
+    suite.addTest(TestCase_02('test_0201'))  # 将需要执行的case添加到Test Suite中，没有添加的不会被执行
 
     #TextTestRuner
-    re = unittest.TextTestRunner().run(suite)  # 将根据case添加的先后顺序执行
+    runer = unittest.TextTestRunner()  # 将根据case添加的先后顺序执行
+    re = runer.run(suite)
     # TestResult
     print(type(re))
+
+
+if __name__ == '__main__':
+    text_runner()
