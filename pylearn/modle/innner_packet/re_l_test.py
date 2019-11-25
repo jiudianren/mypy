@@ -4,16 +4,15 @@
 
 
 import  unittest
-from re_l import *
+from re_l import MyRe
 
-#https://www.cnblogs.com/xiaoxiaolvdou/p/9503090.html
-# https://docs.python.org/2/library/unittest.html
-#
+
 class Test_Re_l_01(unittest.TestCase):  # 继承unittest.TestCase
 
     @classmethod
     def setUpClass(cls):
         print('setUpClass 这是所有case的前置条件 \n')
+        myre= MyRe()
 
     def setUp(self):
         print('setUp 这是每条case的前置条件\n')
@@ -28,7 +27,7 @@ class Test_Re_l_01(unittest.TestCase):  # 继承unittest.TestCase
     def test_find_num_01(self):  # 测试用例的命名必须以test开头，否则不予执行
         print('find_num 正整数 \n')
         num_str = "1a"
-        re = find_num(num_str)
+        re = Test_Re_l_01.myre.find_num(num_str)
 
     def test_4(self):
         print('第四条case \n')
