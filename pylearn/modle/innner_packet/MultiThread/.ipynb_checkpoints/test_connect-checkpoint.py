@@ -2,7 +2,8 @@
 # author jiudianren
 # time:2019/7/26 9:28
 
-
+# !/usr/bin/python3
+# -*- coding: utf-8 -*-
 
 from socket import *
 import os
