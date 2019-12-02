@@ -37,20 +37,26 @@ def download(url, zip_fn):
     return True
 
 
-if __name__ == "__main__":
+def deal_repository( repository_name):
+    config_item ="git_"
+    config_item += repository_name
+    print(config_item)
+
     config = configparser.ConfigParser()
     config.read("downloadgit.ini")
-    url = config["git"]["url"]
+    url = config[config_item]["url"]
     print(url)
-    print(type(url))
-    zip_fn = config["dir"]["zipfile"]
-    uzip_dir = config["dir"]["uzipdir"]
-    print(zip_fn + uzip_dir)
 
-    if download(url, zip_fn):
-        unzip_single(zip_fn, uzip_dir)
+    zip_filename = config[config_item]["zipfile"]
+    uzip_dir = config[config_item]["uzipdir"]
 
+    print(zip_filename + uzip_dir)
 
+    if download(url, zip_filename):
+        unzip_single(zip_filename, uzip_dir)
+
+if __name__ == "__main__":
+    deal_repository("mypy")
 
 
 

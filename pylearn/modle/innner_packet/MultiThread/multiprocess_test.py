@@ -21,7 +21,9 @@ import os, time, random
 from multiprocessing import Process
 
 
-# ×Ó½ø³ÌÒªÖ´ÐÐµÄ´úÂë
+'''
+这个是多进程
+'''
 def run_proc(name):
     print('Run child process %s (%s)...' % (name, os.getpid()))
 
