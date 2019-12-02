@@ -13,6 +13,6 @@ setup(
     long_description ="""
     jiudianren's public tool for myself 
     """,
-    install_requires =[],
+    install_requires =['requests',],
     packages = find_packages()
 )
