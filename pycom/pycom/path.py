@@ -13,8 +13,23 @@ def msg_on_click(root):
     root.quit()
     root.destroy()
 
+    
+def split_str(aim_str: str, line_width=50):
+    total_len = len(aim_str)
+    if total_len < line_width:
+        return aim_str
+
+    re_str = ""
+    i_index = 0
+    while i_index < (total_len/line_width):
+        re_str += aim_str[(i_index*line_width):((i_index+1)*line_width)]
+        re_str += "\n"
+        i_index += 1
+    re_str += aim_str[i_index*line_width:]
+    return re_str
 
 def msg_box(msg_str: str):
+    msg_str = split_str(msg_str)
     root = Tk()
     Label(root, text=msg_str).grid(row=0, column=0)
     Button(root, text="点击确认", command=functools.partial(msg_on_click, root)).grid(row=1, column=0)

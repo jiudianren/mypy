@@ -32,7 +32,7 @@ def download(url, zip_fn):
         print(r.headers)
         print("download Erro " + r.status_code)
         return False
-
+    #todo 预估文件大小，增加进度条
     with open(zip_fn, "wb") as zipname:
         data_size = 0
         chunk_size = 16240
