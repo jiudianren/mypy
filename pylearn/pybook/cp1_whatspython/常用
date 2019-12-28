@@ -1,0 +1,2 @@
+# 冻结二进制文件
+将python文件编译成二进制文件， win下可使用py2exe ,linux下可使用pyInstaller
