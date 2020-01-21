@@ -18,6 +18,9 @@ def test_os():
     new_path="aa"
     #os.mkdir()
     os.getcwd()
+    os.listdir()
+    os.path.basename()
+    
     #os.chdir()
 
 def os_cmd():
