@@ -13,6 +13,6 @@ setup(
     long_description ="""
     jiudianren's public tool for myself 
     """,
-    install_requires =['requests',],
+    install_requires =['requests','pyopenssl'],
     packages = find_packages()
 )
