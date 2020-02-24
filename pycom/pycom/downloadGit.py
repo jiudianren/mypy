@@ -8,6 +8,8 @@ import zipfile
 import configparser
 
 
+config_dir="downloadgit.ini"
+
 def unzip_single(src_file, dest_dir):
     print("unzip_single start")
     f_str = src_file
@@ -54,7 +56,7 @@ def deal_repository( repository_name):
     print(config_item)
 
     config = configparser.ConfigParser()
-    config.read("downloadgit.ini")
+    config.read(config_dir)
     url = config[config_item]["url"]
     print(url)
 
