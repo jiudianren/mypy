@@ -6,6 +6,8 @@ pip install -e  <project_path> //开发模式，可以将包内修改，立即�
 pip uninstall <package-name>  
 
 
+
+
 # 测试代码
 
 import pycom.helloWorld
