@@ -9,6 +9,7 @@ import logging
 
 def pylearnlog( log_level=logging.DEBUG, name="default_name"):
     # log实例
+    logging.basicConfig(format='%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s')
     re = logging.getLogger(name)
     # 创建handler 写到控制台，或者日志文件等
     hds = logging.StreamHandler()
