@@ -14,5 +14,7 @@ pymysql
 # svn
 svn 
 
+# 性能测试
+Locust
 #
 #
