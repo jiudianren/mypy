@@ -1,1 +1,5 @@
 rt
+# pip install aa==version
+# pip install aa -i http://xxxx
+# pip 设置安装源  pip.ini文件
+# pip list --outdate  
